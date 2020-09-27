@@ -10,13 +10,120 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
+const team = []
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
 
+const quesitonsArray = [
+    {
+        type: "list",
+        name: "role",
+        message: "Select the role of the employee",
+        choices: ["Manager", "Engineer", "Intern", "I'm Finished"]
+    }
+]
+
+function promptUser(){
+    const employeeInfo = [
+        {
+            type: "input",
+            name: "name",
+            message: "Enter the name of the Employee"
+        },
+        {
+            type: "number",
+            name: "id",
+            message: "Enter the ID of the Employee"
+        },
+        {
+            type: "input",
+            name: "email",
+            message: "Enter the email of the Employee"
+        },
+    ]
+    inquirer
+    .prompt(quesitonsArray).then(answer => {
+        switch(answer.role){
+            case "Manager":
+                addManager(employeeInfo)
+                break
+            case "Engineer":
+                addEngineer(employeeInfo)
+                break
+            case "Intern":
+                addIntern(employeeInfo)
+                break
+            default:
+                createTeam()
+        }
+    })
+}
+
+function addManager(employeeInfo){
+    employeeInfo.push({
+        type: "input",
+        name: "officeNumber",
+        message: "Enter the office number of the Manager"
+    })
+    inquirer
+    .prompt(employeeInfo).then(answer =>{
+        const newManager = new Manager(answer.name, answer.id, answer.email, answer.officeNumber)
+        team.push(newManager)
+        console.log("New manager was added to the team!")
+        console.log(team)
+        promptUser()
+    })
+}
+
+function addEngineer(employeeInfo){
+    employeeInfo.push({
+        type: "input",
+        name: "github",
+        message: "Enter the GitHub username of the Engineer"
+    })
+    inquirer
+    .prompt(employeeInfo).then(answer =>{
+        const newEngineer = new Engineer(answer.name, answer.id, answer.email, answer.github)
+        team.push(newEngineer)
+        console.log("New engineer was added to the team!")
+        console.log(team)
+        promptUser()
+    })
+}
+
+function addIntern(employeeInfo){
+    employeeInfo.push({
+        type: "input",
+        name: "school",
+        message: "Enter the school of the Intern"
+    })
+    inquirer
+    .prompt(employeeInfo).then(answer =>{
+        const newIntern = new Intern(answer.name, answer.id, answer.email, answer.school)
+        team.push(newIntern)
+        console.log("New intern was added to the team!")
+        console.log(team)
+        promptUser()
+    })
+}
+
+promptUser();
+function createTeam(){
+    const content = render(team)
+    fs.writeFile(outputPath, content, function(err){
+        if (err){
+            throw err
+        }
+        else{
+            console.log("Team file has been successfully created!")
+        }
+    })
+}
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
 // generate and return a block of HTML including templated divs for each employee!
+
 
 // After you have your html, you're now ready to create an HTML file using the HTML
 // returned from the `render` function. Now write it to a file named `team.html` in the
