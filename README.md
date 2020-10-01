@@ -4,9 +4,9 @@ This template engine was built using Object Oriented Programing so that a user a
 
 # Demostration of Generator 
 
-![Preview of the generator](static/media/preview.gif)
+![Preview of the generator](static/media/preview.png)
 <br>
-[Link to the Video (no audio)](https://youtu.be/QeExZRTwNcU)
+[Link to the Video](https://youtu.be/QeExZRTwNcU)
 
 # Installation Instructions
 
